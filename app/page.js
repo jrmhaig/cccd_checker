@@ -1,10 +1,14 @@
+import Link from 'next/link'
+
 async function pingEnvironment(host) {
+  const start = performance.now()
   const response = await fetch(
     `https://${host}/ping`,
     { next: { revalidate: 15 } }
   )
+  console.log(response)
   const data = await response.json()
-  return data
+  return { response_time: (performance.now() - start), ...data }
 }
 
 export default async function Home() {
@@ -19,27 +23,53 @@ export default async function Home() {
 
   return (
     <>
-      <table className="govuk-table">
-        <caption className="govuk-table__caption govuk-table__caption--m">CCCD Environment status</caption>
-        <thead className="govuk-table__head">
-          <tr className="govuk-table__row">
-            <th scope="col" className="govuk-table__header">Environment</th>
-            <th scope="col" className="govuk-table__header">Branch</th>
-            <th scope="col" className="govuk-table__header">Build date</th>
-            <th scope="col" className="govuk-table__header">Commit id</th>
-          </tr>
-        </thead>
-        <tbody className="govuk-table__body">
-          {data.map((row, id) => (
-            <tr key={id} className="govuk-table__row">
-              <th scope="row" className="govuk-table__header">{row.environment}</th>
-              <td className="govuk-table__cell">{row.app_branch}</td>
-              <td className="govuk-table__cell">{row.build_date}</td>
-              <td className="govuk-table__cell">{row.commit_id}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {data.map((row, id) =>
+        <div key={id} className="govuk-summary-card">
+          <div className="govuk-summary-card__title-wrapper">
+            <h2 className="govuk-summary-card__title">{row.environment}</h2>
+          </div>
+          <div className="govuk-summary-card__content">
+            <dl className="govuk-summary-list">
+              <div className="govuk-summary-list__row">
+                <dt className="govuk-summary-list__key">
+                  Branch
+                </dt>
+                <dd className="govuk-summary-list__value">
+                  <Link href={`https://github.com/ministryofjustice/Claim-for-Crown-Court-Defence/tree/${row.app_branch}`}>
+                    {row.app_branch}
+                  </Link>
+                </dd>
+              </div>
+              <div className="govuk-summary-list__row">
+                <dt className="govuk-summary-list__key">
+                  Build date
+                </dt>
+                <dd className="govuk-summary-list__value">
+                  {row.build_date}
+                </dd>
+              </div>
+              <div className="govuk-summary-list__row">
+                <dt className="govuk-summary-list__key">
+                  Commit id
+                </dt>
+                <dd className="govuk-summary-list__value">
+                  <Link href={`https://github.com/ministryofjustice/Claim-for-Crown-Court-Defence/commit/${row.commit_id}`}>
+                    {row.commit_id.substring(0, 6)}
+                  </Link>
+                </dd>
+              </div>
+              <div className="govuk-summary-list__row">
+                <dt className="govuk-summary-list__key">
+                  Response time
+                </dt>
+                <dd className="govuk-summary-list__value">
+                  {Math.round(row.response_time * 100) / 100}ms
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      )}
     </>
   )
 }
