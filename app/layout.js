@@ -9,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="govuk-template">
-      <body className="govuk-template__body ">
+      <body className="govuk-template__body govuk-body">
         <header className="govuk-header " role="banner" data-module="govuk-header">
           <div className="govuk-header__container govuk-width-container">
             <div className="govuk-header__logo">
@@ -37,6 +37,14 @@ export default function RootLayout({ children }) {
         </header>
 
         <div className="govuk-width-container">
+          <div className="govuk-breadcrumbs">
+            <ol className="govuk-breadcrumbs__list">
+              <li className="govuk-breadcrumbs__list-item">
+                <a className="govuk-breadcrumbs__link" href="/">Home</a>
+              </li>
+            </ol>
+          </div>
+
           <main className="govuk-main-wrapper">
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-two-thirds">

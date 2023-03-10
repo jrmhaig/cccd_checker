@@ -1,75 +1,39 @@
 import Link from 'next/link'
-
-async function pingEnvironment(host) {
-  const start = performance.now()
-  const response = await fetch(
-    `https://${host}/ping`,
-    { next: { revalidate: 15 } }
-  )
-  console.log(response)
-  const data = await response.json()
-  return { response_time: (performance.now() - start), ...data }
-}
+import { pingEnvironment } from '@/utils/pingEnvironment'
 
 export default async function Home() {
 
   const data = [
-    { environment: 'Production', ...await pingEnvironment('claim-crown-court-defence.service.gov.uk') },
-    { environment: 'Staging', ...await pingEnvironment('staging.claim-crown-court-defence.service.justice.gov.uk') },
-    { environment: 'API Sandbox', ...await pingEnvironment('api-sandbox.claim-crown-court-defence.service.justice.gov.uk') },
-    { environment: 'Dev', ...await pingEnvironment('dev.claim-crown-court-defence.service.justice.gov.uk') },
-    { environment: 'Dev LGFS', ...await pingEnvironment('dev-lgfs.claim-crown-court-defence.service.justice.gov.uk') },
+    await pingEnvironment('production'),
+    await pingEnvironment('staging'),
+    await pingEnvironment('api-sandbox'),
+    await pingEnvironment('dev'),
+    await pingEnvironment('dev-lgfs'),
   ]
 
   return (
     <>
-      {data.map((row, id) =>
-        <div key={id} className="govuk-summary-card">
-          <div className="govuk-summary-card__title-wrapper">
-            <h2 className="govuk-summary-card__title">{row.environment}</h2>
-          </div>
-          <div className="govuk-summary-card__content">
-            <dl className="govuk-summary-list">
-              <div className="govuk-summary-list__row">
-                <dt className="govuk-summary-list__key">
-                  Branch
-                </dt>
-                <dd className="govuk-summary-list__value">
-                  <Link href={`https://github.com/ministryofjustice/Claim-for-Crown-Court-Defence/tree/${row.app_branch}`}>
-                    {row.app_branch}
-                  </Link>
-                </dd>
-              </div>
-              <div className="govuk-summary-list__row">
-                <dt className="govuk-summary-list__key">
-                  Build date
-                </dt>
-                <dd className="govuk-summary-list__value">
-                  {row.build_date}
-                </dd>
-              </div>
-              <div className="govuk-summary-list__row">
-                <dt className="govuk-summary-list__key">
-                  Commit id
-                </dt>
-                <dd className="govuk-summary-list__value">
-                  <Link href={`https://github.com/ministryofjustice/Claim-for-Crown-Court-Defence/commit/${row.commit_id}`}>
-                    {row.commit_id.substring(0, 6)}
-                  </Link>
-                </dd>
-              </div>
-              <div className="govuk-summary-list__row">
-                <dt className="govuk-summary-list__key">
-                  Response time
-                </dt>
-                <dd className="govuk-summary-list__value">
-                  {Math.round(row.response_time * 100) / 100}ms
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </div>
-      )}
+      <table className="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">Branches on CCCD environments</caption>
+        <thead className="govuk-table__head">
+          <tr className="govuk-table__row">
+            <th className="govuk-table__header">Environment</th>
+            <th className="govuk-table__header">Branch</th>
+          </tr>
+        </thead>
+        <tbody className="govuk-table__body">
+          {data.map((row, id) =>
+            <tr className="govuk-table__row" key={id}>
+              <td className="govuk-table__cell">
+                <Link href={`cccd/${row.key}`}>{row.environment}</Link>
+              </td>
+              <td className="govuk-table__cell">
+                {row.app_branch} ({row.commit_id.substr(0, 6)})
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </>
   )
 }
