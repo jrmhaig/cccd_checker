@@ -37,21 +37,7 @@ export default function RootLayout({ children }) {
         </header>
 
         <div className="govuk-width-container">
-          <div className="govuk-breadcrumbs">
-            <ol className="govuk-breadcrumbs__list">
-              <li className="govuk-breadcrumbs__list-item">
-                <a className="govuk-breadcrumbs__link" href="/">Home</a>
-              </li>
-            </ol>
-          </div>
-
-          <main className="govuk-main-wrapper">
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-two-thirds">
-                {children}
-              </div>
-            </div>
-          </main>
+          {children}
         </div>
 
         <footer className="govuk-footer " role="contentinfo">

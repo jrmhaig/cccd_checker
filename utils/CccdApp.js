@@ -1,5 +1,8 @@
-export async function pingEnvironment(envName) {
-  const environments = {
+export const CccdApp = {
+  key: 'cccd',
+  name: 'Claim for Crown Court Defence',
+  github: 'ministryofjustice/Claim-for-Crown-Court-Defence',
+  environments: {
     'production': {
       host: 'claim-crown-court-defence.service.gov.uk',
       defaults: {
@@ -34,23 +37,6 @@ export async function pingEnvironment(envName) {
         environment: 'Dev LGFS',
         key: 'dev-lgfs'
       }
-    },
-  }
-
-  const environment = environments[envName]
-
-  if (!environment) { return null }
-
-  const start = performance.now()
-  const response = await fetch(
-    `https://${environment.host}/ping`,
-    { next: { revalidate: 15 } }
-  )
-  const data = await response.json()
-  data['build_date'] = new Date(data['build_date'])
-  return {
-    response_time: (performance.now() - start),
-    ...environment.defaults,
-    ...data
+    }
   }
 }
