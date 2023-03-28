@@ -44,27 +44,27 @@ export default async function Page({ params }) {
       <main className="govuk-main-wrapper">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
-            <h1 className="govuk-heading-xl">{app.name} {data.environment} status</h1>
+            <h1 className="govuk-heading-xl">{app.name} {data.environment()} status</h1>
 
             <table className="govuk-table">
               <tbody className="govuk-table__body">
                 <tr className="govuk-table__row">
                   <th scope="row" className="govuk-table__header">Branch</th>
                   <td className="govuk-table__cell">
-                    <Link href={`https://github.com/${app.github}/tree/${data.app_branch}`}>
-                      {data.app_branch}
+                    <Link href={`https://github.com/${app.github}/tree/${data.app_branch()}`}>
+                      {data.app_branch()}
                     </Link>
                   </td>
                 </tr>
                 <tr className="govuk-table__row">
                   <th scope="row" className="govuk-table__header">Build date</th>
-                  <td className="govuk-table__cell">{data.build_date.toLocaleString('en-GB')}</td>
+                  <td className="govuk-table__cell">{data.build_date()?.toLocaleString('en-GB')}</td>
                 </tr>
                 <tr className="govuk-table__row">
                   <th scope="row" className="govuk-table__header">Commit id</th>
                   <td className="govuk-table__cell">
-                    <Link href={`https://github.com/${app.github}/commit/${data.commit_id}`}>
-                      {data.commit_id}
+                    <Link href={`https://github.com/${app.github}/commit/${data.commit_id()}`}>
+                      {data.commit_id()}
                     </Link>
                   </td>
                 </tr>

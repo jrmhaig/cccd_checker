@@ -30,10 +30,10 @@ export default async function AppHome({ params }) {
               <tbody className="govuk-table__body">
                 {data.map((row, id) => <tr className="govuk-table__row" key={id}>
                   <td className="govuk-table__cell">
-                    <Link href={`${app.key}/${row.key}`}>{row.environment}</Link>
+                    <Link href={`${app.key}/${row.key()}`}>{row.environment()}</Link>
                   </td>
                   <td className="govuk-table__cell">
-                    {row.app_branch} ({row.commit_id?.substr(0, 6)})
+                    {row.app_branch()} ({row.commit_id()?.substr(0, 6)})
                   </td>
                 </tr>)
                 }
