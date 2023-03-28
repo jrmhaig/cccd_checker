@@ -58,7 +58,7 @@ export default async function Page({ params }) {
                 </tr>
                 <tr className="govuk-table__row">
                   <th scope="row" className="govuk-table__header">Build date</th>
-                  <td className="govuk-table__cell">{data.build_date()?.toLocaleString('en-GB')}</td>
+                  <td className="govuk-table__cell">{data.build_date()}</td>
                 </tr>
                 <tr className="govuk-table__row">
                   <th scope="row" className="govuk-table__header">Commit id</th>
@@ -70,7 +70,7 @@ export default async function Page({ params }) {
                 </tr>
                 <tr className="govuk-table__row">
                   <th scope="row" className="govuk-table__header">Response time</th>
-                  <td className="govuk-table__cell">{Math.round(data.response_time * 100) / 100} ms</td>
+                  <td className="govuk-table__cell">{data.response_time()} ms</td>
                 </tr>
               </tbody>
             </table>
