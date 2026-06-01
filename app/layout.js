@@ -1,5 +1,5 @@
-import 'node_modules/govuk-frontend/govuk/all.js'
-import 'node_modules/govuk-frontend/govuk/all.scss'
+import 'govuk-frontend/govuk/all.js'
+import 'govuk-frontend/govuk/all.scss'
 
 export const metadata = {
   title: 'Environment Checker',
