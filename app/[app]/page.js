@@ -3,8 +3,33 @@ import AppFinder from '@/utils/AppFinder'
 import Pinger from '@/utils/Pinger'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
+function Error({ message, crumbs }) {
+  return (
+    <>
+      <Breadcrumbs crumbs={crumbs} />
+
+      <main className="govuk-main-wrapper">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <h1 className="govuk-heading-xl">Error</h1>
+            <p>{message}</p>
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}
+
 export default async function AppHome({ params }) {
   const app = AppFinder(params.app)
+
+  if (!app) {
+    return Error({
+      message: `Unknown application: ${params.app}`,
+      crumbs: [{ label: 'Home', url: '/' }],
+    })
+  }
+
   const pinger = new Pinger({ app: app })
 
   const data = await Promise.all(
