@@ -1,5 +1,6 @@
 import 'govuk-frontend/govuk/all.js'
 import 'govuk-frontend/govuk/all.scss'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'Environment Checker',
@@ -13,7 +14,7 @@ export default function RootLayout({ children }) {
         <header className="govuk-header " role="banner" data-module="govuk-header">
           <div className="govuk-header__container govuk-width-container">
             <div className="govuk-header__logo">
-              <a href="/" className="govuk-header__link govuk-header__link--homepage">
+              <Link href="/" className="govuk-header__link govuk-header__link--homepage">
                 <span className="govuk-header__logotype">
                   <svg
                     aria-hidden="true"
@@ -31,7 +32,7 @@ export default function RootLayout({ children }) {
                     GOV.UK
                   </span>
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </header>
